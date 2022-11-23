@@ -1,0 +1,3 @@
+[submodule "lib/fcp-common"]
+	path = lib/fcp-common
+	url = git@github.com:supermileage/fcp-common.git
