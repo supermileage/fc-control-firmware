@@ -5,10 +5,6 @@ SerialInput::SerialInput(UartClass *serial) : Sensor<char>() {
   this->serial = serial;
 }
 
-void SerialInput::init() {
-  
-}
-
 char SerialInput::read() {
   if (serial->available() > 0) {
     value = serial->read();
