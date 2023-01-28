@@ -4,6 +4,9 @@
 
 #define LED 13
 
+#define SERIAL_BAUD_RATE 9600
+#define SERIAL Serial
+
 /* Debugging */
 #define DEBUG_SERIAL_EN 1
 
