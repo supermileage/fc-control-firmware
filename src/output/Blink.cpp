@@ -12,7 +12,7 @@
  * @param timer: MillisTimer object for time keeping
  */
 Blink::Blink(uint8_t pin, uint8_t delay, uint8_t offset, MillisTimer* timer) {
-  this-> pin = pin;
+  this->pin = pin;
   this->delay = delay;
   this->offset = offset;
   this->state = false;
