@@ -4,6 +4,10 @@
 
 #define LED 13
 
+#define SWITCHED_POWER_0 8
+#define BIG_PIMP 9
+#define LIL_PUMP 10
+
 #define SERIAL_BAUD_RATE 9600
 #define SERIAL Serial
 
