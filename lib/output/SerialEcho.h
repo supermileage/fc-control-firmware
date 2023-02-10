@@ -4,6 +4,7 @@
 #include "output/Output.h"
 #include "sensor/SerialInput.h"
 
+template <typename T>
 class SerialEcho: public Output {
 public:
   /**
@@ -11,7 +12,7 @@ public:
    * and a serial in to echo
    * 
    */
-  SerialEcho(SerialInput*);
+  SerialEcho(Sensor<T>*);
 
   /**
    * @brief Refresh output
@@ -19,7 +20,9 @@ public:
   void refresh();
   
 private:
-  SerialInput *serialInput;
+  Sensor<T> *sensor;
 };
+
+#include "output/SerialEcho.hpp"
 
 #endif

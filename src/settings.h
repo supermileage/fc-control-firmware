@@ -1,6 +1,5 @@
 #include "Arduino.h"
-
-#define NUM_CELLS 20
+#include "fcp-common/fcp-common.h"
 
 #define LED 13
 
@@ -11,10 +10,10 @@
 #define SERIAL_BAUD_RATE 9600
 #define SERIAL Serial
 
-#define MUX_SEL_0 7
-#define MUX_SEL_1 8
-#define MUX_SEL_2 9
-#define MUX_SEL_3 10
+#define MUX_SEL_0 4
+#define MUX_SEL_1 5
+#define MUX_SEL_2 6
+#define MUX_SEL_3 7
 
 #define MUX_OUT_1 A0
 #define MUX_OUT_0 A1

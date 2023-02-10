@@ -11,7 +11,7 @@ public:
    * 
    * @params: pin number, delay, offset, timer variable object
    */
-  Blink(uint8_t, uint8_t, uint8_t, MillisTimer*);
+  Blink(uint8_t, uint32_t, uint32_t, MillisTimer*);
 
   /**
    * @brief Refresh output
@@ -20,8 +20,8 @@ public:
   
 private:
   uint8_t pin;
-  uint8_t delay;
-  uint8_t offset;
+  uint32_t delay;
+  uint32_t offset;
   unsigned long last_blunk;
   boolean state;
   MillisTimer* timer;

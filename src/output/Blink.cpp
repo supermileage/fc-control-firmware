@@ -11,7 +11,7 @@
  * @param offset: Offset from delay to blink
  * @param timer: MillisTimer object for time keeping
  */
-Blink::Blink(uint8_t pin, uint8_t delay, uint8_t offset, MillisTimer* timer) {
+Blink::Blink(uint8_t pin, uint32_t delay, uint32_t offset, MillisTimer* timer) {
   this->pin = pin;
   this->delay = delay;
   this->offset = offset;
@@ -25,7 +25,7 @@ Blink::Blink(uint8_t pin, uint8_t delay, uint8_t offset, MillisTimer* timer) {
  * @brief Refreshes blink state, toggling state if needed
  */
 void Blink::refresh(){
-  if ((timer->getValue()-last_blunk > delay ) || (!last_blunk && (timer->getValue() > offset))) {
+  if ((timer->getValue()-last_blunk > delay ) || (last_blunk == 0 && (timer->getValue() > offset))) {
     state = !state;
     digitalWrite(pin, state);
     last_blunk = timer->getValue();

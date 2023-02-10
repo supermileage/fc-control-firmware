@@ -1,35 +1,11 @@
-#include "settings.h"
-#include "sensor/SerialInput.h"
-#include "sensor/Sensor.h"
-#include "sensor/Readable.h"
-#include "output/Output.h"
-#include "output/SerialEcho.h"
-#include "variable/Variable.h"
-#include "variable/Dependable.h"
-#include "output/Blink.h"
-
-SerialInput* serialInput = new SerialInput();
-SerialEcho* serialEcho = new SerialEcho(serialInput);
-MillisTimer* millisTimer = new MillisTimer();
-Blink* blink0 = new Blink(SWITCHED_POWER_0, 24000, 0, millisTimer);
-Blink* blink1 = new Blink(BIG_PIMP, 24000, 8000, millisTimer);
-Blink* blink2 = new Blink(LIL_PUMP, 24000, 16000, millisTimer);
-
-Readable* readables[] = {
-  serialInput
-};
-Dependable* dependables[] = {
-  millisTimer
-};
-Output* outputs[] = {
-  serialEcho,
-  blink0,
-  blink1,
-  blink2
-};
+#include "queen.h"
 
 void setup(){
   SERIAL.begin(SERIAL_BAUD_RATE);
+  Utils::setupMux();
+  // Set up outputs
+  SERIAL.println("starting");
+  
 }
 
 void loop(){

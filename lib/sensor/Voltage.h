@@ -1,7 +1,10 @@
-include "settings.h"
-include "sensor/Sensor.h"
+#ifndef VOLTAGE_H
+#define VOLTAGE_H
+#include "settings.h"
+#include "sensor/Sensor.h"
+#include "utils/Utils.h"
 
-class VoltageSensor : public Sensor<double>{
+class Voltage : public Sensor<float>{
 
 public:
 /**
@@ -10,26 +13,33 @@ public:
  * @param id sensor id tag
  * @param muxIndex number from 0-31 indicating the mux output this sensor is associated with
 */
-VoltageSensor(int,int);
+Voltage(uint8_t,uint8_t);
 
 /**
 * @brief read and return the cell voltage
 * 
 * @return the voltage of the associated cell
 */
-double read() override;
+void read() override;
 
 /**
 * @brief get the most recent voltage reading
 * 
 * @return the most recent voltage reading from the cell
 */
-double getValue() override;
+float getValue() override;
+
+/**
+* @brief get the ID of the voltage sensor
+* 
+* @return the ID of the voltage sensor
+*/
+uint8_t getId();
 
 private:
-    double value;
-    int id;
-    int muxIndex;
+    float value;
+    uint8_t id;
+    uint8_t muxIndex;
 };
 
 #endif
