@@ -12,6 +12,7 @@
 #include "output/Blink.h"
 #include "sensor/Voltage.h"
 #include "sensor/MultiVoltage.h"
+#include "sensor/CurrentSensing.h"
 
 float voltageSettings[FC_NUM_CELLS][2] = {
   {4.33, 0},    // cell 1
@@ -50,18 +51,27 @@ SerialEcho<char>* serialMonitor = new SerialEcho<char>(serialInput);
 SerialEcho<float>* serialVoltage = new SerialEcho<float>(voltage);
 SerialEcho<float*>* serialMultiVoltage = new SerialEcho<float*>(multiVoltage);
 
+CurrentSensing* motorCurrent = new CurrentSensing(MOTOR_CURRENT, 0.5054, 100.0/0.61);
+SerialEcho<float>* serialMotorCurrent = new SerialEcho<float>(motorCurrent);
+CurrentSensing* fcCurrent = new CurrentSensing(FC_CURRENT, 0.36, 100.0/0.66);
+SerialEcho<float>* serialFcCurrent = new SerialEcho<float>(fcCurrent);
+
 Readable* readables[] = {
   //voltage,
   multiVoltage,
-  serialInput
+  serialInput,
+  // motorCurrent,
+  fcCurrent
 };
 Dependable* dependables[] = {
   millisTimer
 };
 Output* outputs[] = {
-  serialMonitor,
+  //serialMonitor,
   //serialVoltage,
-  serialMultiVoltage,
+  //serialMultiVoltage,
+  //serialMotorCurrent,
+  serialFcCurrent,
   blink0,
   blink1,
   blink2
