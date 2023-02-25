@@ -1,26 +1,19 @@
 #include "settings.h"
 #include "sensor/CurrentSensing.h"
 
-// define pins here
 
-
-
-CurrentSensing::CurrentSensing(int pin) {
+CurrentSensing::CurrentSensing(uint8_t pin, float offset, float currentStep) {
     this->sensorPin = pin;
+    this->offset = offset;
+    this->currentStep = currentStep;
     pinMode(sensorPin, INPUT);
 }
 
-float CurrentSensing::read() {
-  int ADCres = 1023; //sensitivity
-  float voltage = analogRead(sensorPin) * (5.0 / ADCres);
-  if (voltage>0){
-    value = voltage;
-  }
-  else{
-    value = '\0';
-  }
-
-  return value;
+void CurrentSensing::read() {
+  float ADCres = 1023.0; //sensitivity
+  float raw = analogRead(sensorPin);
+  value = ((float)(raw/ ADCres) - offset) * currentStep;
+  SERIAL.println(raw/ADCres);
 }
 
 float CurrentSensing::getValue(){

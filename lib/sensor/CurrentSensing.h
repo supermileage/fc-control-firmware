@@ -13,14 +13,16 @@ class CurrentSensing: public Sensor<float>{
      * 
      */
 
-    CurrentSensing(int);
+    CurrentSensing(uint8_t, float, float);
 
-    float read() override;
+    void read() override;
     float getValue() override;
 
     private:
-        int sensorPin;
+        uint8_t sensorPin;
         float value;
+        float offset;
+        float currentStep; // dA/d(% voltage) 
 
 };
 

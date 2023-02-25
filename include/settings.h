@@ -18,6 +18,13 @@
 #define MUX_OUT_1 A0
 #define MUX_OUT_0 A1
 
+#define MOTOR_CURRENT A7
+#define FC_CURRENT A6
+
+/*Current Sensing Values*/
+#define offsetMotor 0.5054
+#define stepCurrentMotor 0.61
+
 
 /* Debugging */
 #define DEBUG_SERIAL_EN 1
