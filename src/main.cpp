@@ -1,16 +1,27 @@
-#include "settings.h"
-#include "sensor/SerialInput.h"
-#include "sensor/Sensor.h"
-
-Sensor<char>* serialInput;
+#include "queen.h"
 
 void setup(){
   SERIAL.begin(SERIAL_BAUD_RATE);
-  serialInput = new SerialInput(&Serial);
+  Utils::setupMux();
+  // Set up outputs
+  SERIAL.println("starting");
+  
 }
 
 void loop(){
-  serialInput->read();
-  if (serialInput->getValue() != '\0')
-    Serial.print(serialInput->getValue());
+  // SERIAL.print("loop");
+  // Read Readables
+  for (int i = 0; i < sizeof(readables) / sizeof(readables[0]); ++i) {
+    readables[i]->read();
+  }
+
+  // Set Vars
+  for (int i = 0; i < sizeof(dependables) / sizeof(dependables[0]); ++i){
+    dependables[i]->refresh();
+  }
+  // refresh outputs
+  for (int i = 0; i < sizeof(outputs) / sizeof(outputs[0]); ++i) {
+    outputs[i]->refresh();
+  }
+  delay(1);
 }
