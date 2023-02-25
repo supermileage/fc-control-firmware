@@ -13,7 +13,7 @@ class MultiVoltage: public Sensor<float*> {
   /**
    * @brief Read all voltages from the multiplexer
    */
-  void read();
+  void read() override;
 
   /**
    * @brief Get the last read character from the serial port

@@ -14,7 +14,7 @@ class SerialInput: public Sensor<char> {
    * @brief Read and return one character from the serial port if available,
    * otherwise return '\0'
    */
-  void read();
+  void read() override;
 
   /**
    * @brief Get the last read character from the serial port
