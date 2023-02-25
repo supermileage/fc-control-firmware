@@ -37,7 +37,6 @@ float getValue() override;
 uint8_t getId();
 
 private:
-    float value;
     uint8_t id;
     uint8_t muxIndex;
 };

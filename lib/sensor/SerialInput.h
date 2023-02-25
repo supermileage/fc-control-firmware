@@ -22,10 +22,6 @@ class SerialInput: public Sensor<char> {
    * @return The last read character from the serial port
    */
   char getValue() override;
-
-
-  private:
-  char value;         // Last read character
 };
 
 

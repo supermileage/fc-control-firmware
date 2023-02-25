@@ -1,5 +1,5 @@
 #include "Arduino.h"
-#include "fcp-common/fcp-common.h"
+#include "fcp-common.h"
 
 #define LED 13
 

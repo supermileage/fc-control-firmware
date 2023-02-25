@@ -6,12 +6,6 @@
 template <typename T>
 class Sensor : public Readable {
 public:
-  /**
-   * @brief Read from sensor, and value
-   * 
-   * @return The value read from the sensor 
-   */
-  void read();
 
   /**
    * @brief Get the last read value of the sensor
@@ -19,9 +13,8 @@ public:
    * @return The last read value of the sensor
    */
   virtual T getValue()=0;
-
-private:
-  T value;
+  protected:
+    T value;
 };
 
 
