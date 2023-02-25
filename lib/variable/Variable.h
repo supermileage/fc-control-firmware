@@ -1,17 +1,17 @@
-#ifndef SENSOR_H
-#define SENSOR_H
+#ifndef VARIABLE_H
+#define VARIABLE_H
 #include "settings.h"
-#include "sensor/Readable.h"
+#include "variable/Dependable.h"
 
 template <typename T>
-class Sensor : public Readable {
+class Variable : public Dependable{
 public:
   /**
    * @brief Read from sensor, and value
    * 
    * @return The value read from the sensor 
    */
-  void read();
+  void refresh();
 
   /**
    * @brief Get the last read value of the sensor
@@ -23,6 +23,6 @@ public:
 private:
   T value;
 };
-
+  
 
 #endif

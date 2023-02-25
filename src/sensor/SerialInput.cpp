@@ -1,17 +1,15 @@
 #include "settings.h"
 #include "sensor/SerialInput.h"
 
-SerialInput::SerialInput(UartClass *serial) : Sensor<char>() {
-  this->serial = serial;
+SerialInput::SerialInput() {
 }
 
-char SerialInput::read() {
-  if (serial->available() > 0) {
-    value = serial->read();
+void SerialInput::read() {
+  if (SERIAL.available() > 0) {
+    value = SERIAL.read();
   } else {
     value = '\0';
   }
-  return value;
 }
 
 char SerialInput::getValue() {
