@@ -74,9 +74,11 @@ float last_reading = 0.0;
 
 //int mux_1_calib = 0.0141;
 
+float mu1_cali = 0.0138;
+float mux2_cali = 0.014;
 int cellTable[CELL_ARRAY_SIZE] = {19,18,17,16,15,14,13,12,11,10,9,8,7, 6, 5, 4, 3, 2, 1, 0};
-float cell_calibration[CELL_ARRAY_SIZE] = {0.0174, 0.01736, 0.01552, 0.0156, 0.01553, 0.0156, 0.0141, 0.0141, 0.0141, 0.0141, 0.0141, 0.0141, 0.0141, 0.0141, 0.0141, 0.0141, 0.0143, 0.0143, 0.0143, 0.0143};
-
+//float cell_calibration[CELL_ARRAY_SIZE] = {0.0205, 0.01736, 0.01552, 0.0156, 0.01553, 0.0156, 0.0141, 0.0141, 0.0141, 0.0141, 0.0141, 0.0141, 0.0141, 0.0141, 0.0141, 0.0141, 0.0143, 0.0143, 0.0143, 0.0143};
+float cell_calibration[CELL_ARRAY_SIZE] = {0.0196, 0.0165, 0.0151, 0.0149, 0.0149, 0.0149, mu1_cali, mu1_cali, mu1_cali, mu1_cali, mu1_cali, mu1_cali, mu1_cali, mu1_cali, mu1_cali, mu1_cali, mux2_cali, mux2_cali, mux2_cali, mux2_cali};
 // unsigned long lastErrorTime = 0;
 // unsigned long lastBigPumpTime = 0;
 // unsigned long debounceDelay = delay_time*4;
@@ -343,11 +345,11 @@ void loop() {
     delay(500);
   } 
 
-  //comment this section out if we fix the top cell issue
-  // if(minIndex = LEADING_ZEROES){
-  //   volMin = secondVolMin;
-  //   minIndex = secondMinIndex;
-  // }
+  // //comment this section out if we fix the top cell issue
+  if(minIndex = LEADING_ZEROES){
+    volMin = secondVolMin;
+    minIndex = secondMinIndex;
+  }
   
   // control logic
   // check if it is in the initialization state 
@@ -371,7 +373,8 @@ void loop() {
 
       // if voltage is too low, turn on big pump until voltage exceeds a threshold 
       //Todo: add option for only one pump here
-      if (!bigPump && volMin < 0.7 ) {
+      //if (!bigPump && volMin < 0.7 ) {
+      if (!bigPump && muxVals[0] < 13.0 ) {
         bigPumpCounter += 1;
         if(bigPumpCounter>countLimit){
           digitalWrite(BIG_PUMP, HIGH);
@@ -379,7 +382,8 @@ void loop() {
           bigPumpCounter = countLimit + 5; //placeholder to prevent overflow
         }
         
-      } else if (bigPump, volMin > 0.75) {
+      //} else if (bigPump, volMin > 0.75) {
+      } else if (bigPump, muxVals[0] > 13.5) {
         bigPump = false;
         digitalWrite(BIG_PUMP, LOW);
         bigPumpCounter = 0;
@@ -390,7 +394,8 @@ void loop() {
 
       
       
-      if (volMin < 0.4){
+      //if (volMin < 0.4){
+      if (muxVals[0] < 11.0){
       //if(secondVolMin<0.4)
         errorCount += 1;
         if(errorCount>countLimit){
@@ -410,7 +415,8 @@ void loop() {
 
       
     } // wait until capacitor charges up to 12 Volts
-    else if (volMin > 0.6) {
+    //else if (volMin > 0.6) {
+    else if (muxVals[0] > 12) {
         initializing = false;
         //delay(2000);
     }
