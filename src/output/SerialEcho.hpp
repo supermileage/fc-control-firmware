@@ -23,7 +23,7 @@ void SerialEcho<char>::refresh() {
 // If type is array, assume array is for each cell
 template <>
 void SerialEcho<float*>::refresh() {
-  for (int i = 0; i < FC_NUM_CELLS; ++i) {
+  for (int i = 0; i < 8; ++i) {
     SERIAL.print(sensor->getValue()[i]);
     SERIAL.print(" ");
   }

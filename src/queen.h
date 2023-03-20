@@ -12,6 +12,7 @@
 #include "output/Blink.h"
 #include "sensor/Voltage.h"
 #include "sensor/MultiVoltage.h"
+#include "sensor/Adc.h"
 
 float voltageSettings[FC_NUM_CELLS][2] = {
   {4.33, 0},    // cell 1
@@ -38,30 +39,30 @@ float voltageSettings[FC_NUM_CELLS][2] = {
 
 SerialInput* serialInput = new SerialInput();
 
-Voltage* voltage = new Voltage(1, 1);
-MultiVoltage* multiVoltage = new MultiVoltage(voltageSettings);
-
 MillisTimer* millisTimer = new MillisTimer();
+
+Adc* adc0 = new Adc(ADCSelect0);
+Adc* adc1 = new Adc(ADCSelect1);
+Adc* adc2 = new Adc(ADCSelect2);
+Adc* adc3 = new Adc(ADCSelect3);
 
 Blink* blink0 = new Blink(SWITCHED_POWER_0, 3000, 0, millisTimer);
 Blink* blink1 = new Blink(BIG_PIMP, 3000, 1000, millisTimer);
 Blink* blink2 = new Blink(LIL_PUMP, 3000, 2000, millisTimer);
 SerialEcho<char>* serialMonitor = new SerialEcho<char>(serialInput);
-SerialEcho<float>* serialVoltage = new SerialEcho<float>(voltage);
-SerialEcho<float*>* serialMultiVoltage = new SerialEcho<float*>(multiVoltage);
+
+SerialEcho<float*>* serialMonitorVoltage = new SerialEcho<float*>(adc0);
 
 Readable* readables[] = {
-  //voltage,
-  multiVoltage,
-  serialInput
+  adc0,
+  //serialInput
 };
 Dependable* dependables[] = {
   millisTimer
 };
 Output* outputs[] = {
-  serialMonitor,
-  //serialVoltage,
-  serialMultiVoltage,
+  //serialMonitorVoltage,
+  //serialMonitor,
   blink0,
   blink1,
   blink2
