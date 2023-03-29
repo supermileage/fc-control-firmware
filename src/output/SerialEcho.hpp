@@ -4,28 +4,33 @@
 #include "output/SerialEcho.h"
 
 template <typename T>
-SerialEcho<T>::SerialEcho(Sensor<T>* sensor) {
-  this-> sensor = sensor;
+SerialEcho<T>::SerialEcho(T* value, boolean isList = false, uint16_t listLen = 0) {
+  this->value = value;
+  this->isList = isList;
+  this->listLen = listLen;
 }
 
 template <typename T>
 void SerialEcho<T>::refresh() {
-  SERIAL.println((T)sensor->getValue());
+  if (isList) {
+    for (uint16_t i = 0; i < listLen; i++) {
+      SERIAL.print((T)(this->value[i]));
+      SERIAL.print(" ");
+    }
+    SERIAL.println();
+  } else {
+    SERIAL.println((T)*(this->value));
+  }
 }
 
 template <>
 void SerialEcho<char>::refresh() {
-  if (sensor->getValue() != '\0') {
-    SERIAL.print(sensor->getValue());
+  if (this->isList) {
+    if (*(this->value) != '\0') {
+      SERIAL.print(*(this->value));
+    }
+    SERIAL.println();
+  } else {
+    SERIAL.println(*(this->value));
   }
-}
-
-// If type is array, assume array is for each cell
-template <>
-void SerialEcho<float*>::refresh() {
-  for (int i = 0; i < FC_NUM_CELLS; ++i) {
-    SERIAL.print(sensor->getValue()[i]);
-    SERIAL.print(" ");
-  }
-  SERIAL.println();
 }

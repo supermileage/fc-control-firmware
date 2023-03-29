@@ -19,9 +19,6 @@ public:
    * @return The last read value of the sensor
    */
   virtual T getValue()=0;
-
-private:
-  T value;
 };
   
 
