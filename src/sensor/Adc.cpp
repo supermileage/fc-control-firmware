@@ -9,18 +9,14 @@ Adc::Adc(uint8_t chipSelect) {
 void Adc::read() {
   SPI.beginTransaction(SPISettings(1000000, MSBFIRST, SPI_MODE3));
   digitalWrite(this->CS, LOW);
-  for (uint16_t i = 0; i < 1; i++) {
+  for (uint16_t i = 0; i < ADCChannels; i++) {
     uint16_t value = SPI.transfer16((i+1) << 3 << 8);
-    this->adcValues[i] = (float)value;
-    SERIAL.print(value);
-    SERIAL.print(" ");
+    this->adcValues[i] = (uint16_t)value;
   }
   digitalWrite(this->CS, HIGH);
   SPI.endTransaction();
-
-  SERIAL.println();
 }
 
-float* Adc::getValue() {
-  return (float*)this->adcValues;
+uint16_t* Adc::getValue() {
+  return (uint16_t*)this->adcValues;
 }

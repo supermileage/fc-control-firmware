@@ -13,6 +13,13 @@
 #include "sensor/Voltage.h"
 #include "sensor/MultiVoltage.h"
 #include "sensor/Adc.h"
+#include "sensor/AdcAnalog.h"
+#include "variable/Voltages.h"
+#include "variable/Minimum.h"
+#include "variable/StateController.h"
+#include "output/StateToggle.h"
+#include "utils/ControlState.h"
+#include "variable/CellVoltages.h"
 
 float voltageSettings[FC_NUM_CELLS][2] = {
   {4.33, 0},    // cell 1
@@ -33,39 +40,56 @@ float voltageSettings[FC_NUM_CELLS][2] = {
   {4.33, 0},    // cell 16
   {4.33, 0},    // cell 17
   {4.33, 0},    // cell 18
-  {4.33, 0},    // cell 19
-  {4.33, 0}     // cell 20
+  {4.33, 0}    // cell 19
+  // {4.33, 0}     // cell 20
 };
 
+// Inputs
 SerialInput* serialInput = new SerialInput();
+Adc *adcList[] = {
+  new Adc(ADCSelect0),
+  new Adc(ADCSelect1),
+  new Adc(ADCSelect2),
+  new Adc(ADCSelect3)
+};
+AdcAnalog* adcs = new AdcAnalog(adcList, NUM_ADCS);
 
+// Variables
+Voltages* voltages = new Voltages(adcs, NUM_ADCS, FC_NUM_CELLS + 1);
+CellVoltages *cellVoltages = new CellVoltages(voltages);
 MillisTimer* millisTimer = new MillisTimer();
+Minimum* minimumVoltage = new Minimum(cellVoltages->getValue(), FC_NUM_CELLS);
+StateController* stateController = new StateController(cellVoltages, FC_NUM_CELLS, millisTimer, minimumVoltage);
 
-Adc* adc0 = new Adc(ADCSelect0);
-Adc* adc1 = new Adc(ADCSelect1);
-Adc* adc2 = new Adc(ADCSelect2);
-Adc* adc3 = new Adc(ADCSelect3);
+// Outputs
+ControlState bigPumpOnStates[] = {ControlState::RECOVER_INIT, ControlState::RECOVER_MAIN};
+ControlState lilPumpOnStates[] = {ControlState::INIT, ControlState::RECOVER_INIT, ControlState::MAIN, ControlState::RECOVER_MAIN};
+ControlState faultOutputStates[] = {ControlState::FAULT};
 
-Blink* blink0 = new Blink(SWITCHED_POWER_0, 3000, 0, millisTimer);
-Blink* blink1 = new Blink(BIG_PIMP, 3000, 1000, millisTimer);
-Blink* blink2 = new Blink(LIL_PUMP, 3000, 2000, millisTimer);
-SerialEcho<char>* serialMonitor = new SerialEcho<char>(serialInput);
+StateToggle* bigPump = new StateToggle(stateController, bigPumpOnStates, sizeof(bigPumpOnStates) / sizeof(bigPumpOnStates[0]), BIG_PIMP, LOW);
+StateToggle* lilPump = new StateToggle(stateController, lilPumpOnStates, sizeof(lilPumpOnStates) / sizeof(lilPumpOnStates[0]), LIL_PUMP, HIGH);
+StateToggle* faultOutput = new StateToggle(stateController, faultOutputStates, sizeof(faultOutputStates) / sizeof(faultOutputStates[0]), SWITCHED_POWER_0, LOW);
 
-SerialEcho<float*>* serialMonitorVoltage = new SerialEcho<float*>(adc0);
+SerialEcho<char>* serialMonitor = new SerialEcho<char>(&serialInput->value);
+SerialEcho<float>* voltageSerialMonitor = new SerialEcho<float>(cellVoltages->getValue(), true, FC_NUM_CELLS);
+SerialEcho<uint16_t>* adcSerialMonitor = new SerialEcho<uint16_t>(adcs->getValue(), true, ADCChannels * NUM_ADCS);
 
 Readable* readables[] = {
-  adc0,
+  adcs
   //serialInput
 };
 Dependable* dependables[] = {
-  millisTimer
+  voltages,
+  cellVoltages,
+  millisTimer,
+  minimumVoltage,
+  stateController
 };
 Output* outputs[] = {
-  //serialMonitorVoltage,
-  //serialMonitor,
-  blink0,
-  blink1,
-  blink2
+  voltageSerialMonitor,
+  bigPump,
+  lilPump,
+  faultOutput
 };
 
 #endif

@@ -1,15 +1,16 @@
-#ifndef ADC_H
-#define ADC_H
+#ifndef ADCANALOG_H
+#define ADCANALOG_H
 #include "settings.h"
 #include "sensor/Sensor.h"
+#include "sensor/Adc.h"
 #include "SPI.h"
 
-class Adc: public Sensor<uint16_t*> {
+class AdcAnalog: public Sensor<uint16_t*> {
   public:
   /**
    * @brief Construct a new Adc Sensor Object
    */
-  Adc(uint8_t);
+  AdcAnalog(Adc** , uint8_t);
 
   /**
    * @brief Read all voltages from the adc
@@ -22,8 +23,9 @@ class Adc: public Sensor<uint16_t*> {
   uint16_t* getValue() override;
 
   private:
-  uint16_t adcValues[ADCChannels];         // Last read character
-  uint8_t CS;
+  Adc** adcs;
+  uint8_t numAdcs;
+  uint16_t adcValues[ADCChannels * NUM_ADCS];         // Last read character
   arduino::SPISettings spiSettings;
 };
 
