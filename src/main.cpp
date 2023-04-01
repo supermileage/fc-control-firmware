@@ -1,11 +1,22 @@
 #include "queen.h"
+#include "SPI.h"
 
 void setup(){
+  SPI.begin();
   SERIAL.begin(SERIAL_BAUD_RATE);
-  Utils::setupMux();
   // Set up outputs
   SERIAL.println("starting");
   
+  pinMode(ADCSelect0, OUTPUT);
+  pinMode(ADCSelect1, OUTPUT);
+  pinMode(ADCSelect2, OUTPUT);
+  pinMode(ADCSelect3, OUTPUT);
+  digitalWrite(ADCSelect0, HIGH);
+  digitalWrite(ADCSelect1, HIGH);
+  digitalWrite(ADCSelect2, HIGH);
+  digitalWrite(ADCSelect3, HIGH);
+
+  pinMode(MISO, INPUT_PULLDOWN);
 }
 
 void loop(){

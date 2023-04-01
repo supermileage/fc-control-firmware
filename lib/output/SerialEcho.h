@@ -12,7 +12,7 @@ public:
    * and a serial in to echo
    * 
    */
-  SerialEcho(Sensor<T>*);
+  SerialEcho(T*, boolean, uint16_t);
 
   /**
    * @brief Refresh output
@@ -20,7 +20,9 @@ public:
   void refresh();
   
 private:
-  Sensor<T> *sensor;
+  T *value;
+  boolean isList;
+  uint16_t listLen;
 };
 
 #include "output/SerialEcho.hpp"
