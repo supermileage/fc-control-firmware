@@ -21,29 +21,6 @@
 #include "utils/ControlState.h"
 #include "variable/CellVoltages.h"
 
-float voltageSettings[FC_NUM_CELLS][2] = {
-  {4.33, 0},    // cell 1
-  {4.33, 0},    // cell 2
-  {4.33, 0},    // cell 3
-  {4.33, 0},    // cell 4
-  {4.33, 0},    // cell 5
-  {4.33, 0},    // cell 6
-  {4.33, 0},    // cell 7
-  {4.33, 0},    // cell 8
-  {4.33, 0},    // cell 9
-  {4.33, 0},    // cell 10
-  {4.33, 0},    // cell 11
-  {4.33, 0},    // cell 12
-  {4.33, 0},    // cell 13
-  {4.33, 0},    // cell 14
-  {4.33, 0},    // cell 15
-  {4.33, 0},    // cell 16
-  {4.33, 0},    // cell 17
-  {4.33, 0},    // cell 18
-  {4.33, 0}    // cell 19
-  // {4.33, 0}     // cell 20
-};
-
 // Inputs
 SerialInput* serialInput = new SerialInput();
 Adc *adcList[] = {
@@ -73,6 +50,7 @@ StateToggle* faultOutput = new StateToggle(stateController, faultOutputStates, s
 SerialEcho<char>* serialMonitor = new SerialEcho<char>(&serialInput->value);
 SerialEcho<float>* voltageSerialMonitor = new SerialEcho<float>(cellVoltages->getValue(), true, FC_NUM_CELLS);
 SerialEcho<uint16_t>* adcSerialMonitor = new SerialEcho<uint16_t>(adcs->getValue(), true, ADCChannels * NUM_ADCS);
+SerialEcho<const char*>* stateSerialMonitor = new SerialEcho<const char*>(stateController->getString());
 
 Readable* readables[] = {
   adcs
@@ -86,6 +64,7 @@ Dependable* dependables[] = {
   stateController
 };
 Output* outputs[] = {
+  stateSerialMonitor,
   voltageSerialMonitor,
   bigPump,
   lilPump,

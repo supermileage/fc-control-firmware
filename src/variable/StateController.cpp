@@ -15,7 +15,6 @@ StateController::StateController(CellVoltages* voltages, uint8_t numVoltages, Mi
 }
 
 void StateController::refresh() {
-  SERIAL.println(this->state);
   switch(this->state) {
     case ControlState::INIT:
       if (this->timer->getValue() > INIT_TIME_LIMIT) {
@@ -47,8 +46,13 @@ void StateController::refresh() {
       this->state = this->state;
       break;
   }
+  this->stateString = controlStateToString(state);
 }
 
 ControlState StateController::getValue() {
   return state;
+}
+
+const char** StateController::getString() {
+  return &stateString;
 }

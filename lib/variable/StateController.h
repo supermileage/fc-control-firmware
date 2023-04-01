@@ -27,12 +27,20 @@ public:
    */
   ControlState getValue() override;
 
+  /**
+   * @brief get the current state as a string
+   * 
+   * @return the current state as a string
+  */
+  const char** getString();
+
 private:
   ControlState state;
   CellVoltages* voltages;
   MillisTimer* timer;
   uint8_t numVoltages;
   Minimum* minVoltage;
+  const char* stateString;
 };
   
 

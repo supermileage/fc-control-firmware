@@ -24,13 +24,25 @@ void SerialEcho<T>::refresh() {
 }
 
 template <>
-void SerialEcho<char>::refresh() {
+void SerialEcho<char*>::refresh() {
   if (this->isList) {
+    SERIAL.println(*(this->value));
+  } else {
     if (*(this->value) != '\0') {
       SERIAL.print(*(this->value));
     }
     SERIAL.println();
-  } else {
+  }
+}
+
+template <>
+void SerialEcho<const char*>::refresh() {
+  if (this->isList) {
     SERIAL.println(*(this->value));
+  } else {
+    if (*(this->value) != '\0') {
+      SERIAL.print(*(this->value));
+    }
+    SERIAL.println();
   }
 }
