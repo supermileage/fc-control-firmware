@@ -55,7 +55,7 @@ StateToggle* faultOutput = new StateToggle(stateController, faultOutputStates, s
 CurrentSensing* motorCurrent = new CurrentSensing(MOTOR_CURRENT, 0.5054, 100/1.5*5);
 CurrentSensing* fcCurrent = new CurrentSensing(FC_CURRENT, 0.36, 100.0/0.66);
 
-HumanReadableSerial* humanReadableSerial = new HumanReadableSerial(voltages, motorCurrent, fcCurrent, stateController);
+HumanReadableSerial* humanReadableSerial = new HumanReadableSerial(cellVoltages, motorCurrent, fcCurrent, stateController);
 
 
 Readable* readables[] = {

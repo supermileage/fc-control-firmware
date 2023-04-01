@@ -14,7 +14,7 @@ public:
    * and a serial in to echo
    * 
    */
-  HumanReadableSerial(Voltages*, CurrentSensing*, CurrentSensing*, StateController*);
+  HumanReadableSerial(CellVoltages*, CurrentSensing*, CurrentSensing*, StateController*);
 
   /**
    * @brief Refresh output
@@ -22,7 +22,7 @@ public:
   void refresh();
   
 private:
-  Voltages* voltages;
+  CellVoltages* voltages;
   CurrentSensing* motorCurrent;
   CurrentSensing* fcCurrent;
   StateController* state;

@@ -1,7 +1,7 @@
 #include "settings.h"
 #include "output/serial/HumanReadableSerial.h"
 
-HumanReadableSerial::HumanReadableSerial(Voltages* voltages, CurrentSensing* motorCurrent, CurrentSensing* fcCurrent, StateController* state){
+HumanReadableSerial::HumanReadableSerial(CellVoltages* voltages, CurrentSensing* motorCurrent, CurrentSensing* fcCurrent, StateController* state){
   this->voltages = voltages;
   this->state = state;
   this->motorCurrent = motorCurrent;
