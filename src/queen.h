@@ -10,8 +10,6 @@
 #include "variable/Variable.h"
 #include "variable/Dependable.h"
 #include "output/Blink.h"
-#include "sensor/Voltage.h"
-#include "sensor/MultiVoltage.h"
 #include "sensor/CurrentSensing.h"
 #include "sensor/Adc.h"
 #include "sensor/AdcAnalog.h"
@@ -21,6 +19,7 @@
 #include "output/StateToggle.h"
 #include "utils/ControlState.h"
 #include "variable/CellVoltages.h"
+#include "output/serial/HumanReadableSerial.h"
 
 // Inputs
 SerialInput* serialInput = new SerialInput();
@@ -48,18 +47,21 @@ StateToggle* bigPump = new StateToggle(stateController, bigPumpOnStates, sizeof(
 StateToggle* lilPump = new StateToggle(stateController, lilPumpOnStates, sizeof(lilPumpOnStates) / sizeof(lilPumpOnStates[0]), LIL_PUMP, HIGH);
 StateToggle* faultOutput = new StateToggle(stateController, faultOutputStates, sizeof(faultOutputStates) / sizeof(faultOutputStates[0]), SWITCHED_POWER_0, LOW);
 
-SerialEcho<char>* serialMonitor = new SerialEcho<char>(&serialInput->value);
-SerialEcho<float>* voltageSerialMonitor = new SerialEcho<float>(cellVoltages->getValue(), true, FC_NUM_CELLS);
-SerialEcho<uint16_t>* adcSerialMonitor = new SerialEcho<uint16_t>(adcs->getValue(), true, ADCChannels * NUM_ADCS);
-SerialEcho<const char*>* stateSerialMonitor = new SerialEcho<const char*>(stateController->getString());
+// SerialEcho<char>* serialMonitor = new SerialEcho<char>(&serialInput->value);
+// SerialEcho<float>* voltageSerialMonitor = new SerialEcho<float>(cellVoltages->getValue(), true, FC_NUM_CELLS);
+// SerialEcho<uint16_t>* adcSerialMonitor = new SerialEcho<uint16_t>(adcs->getValue(), true, ADCChannels * NUM_ADCS);
+// SerialEcho<const char*>* stateSerialMonitor = new SerialEcho<const char*>(stateController->getString());
 
-CurrentSensing* motorCurrent = new CurrentSensing(MOTOR_CURRENT, 0.5054, 100.0/0.61);
-SerialEcho<float>* serialMotorCurrent = new SerialEcho<float>(motorCurrent);
+CurrentSensing* motorCurrent = new CurrentSensing(MOTOR_CURRENT, 0.5054, 100/1.5*5);
 CurrentSensing* fcCurrent = new CurrentSensing(FC_CURRENT, 0.36, 100.0/0.66);
-SerialEcho<float>* serialFcCurrent = new SerialEcho<float>(fcCurrent);
+
+HumanReadableSerial* humanReadableSerial = new HumanReadableSerial(voltages, motorCurrent, fcCurrent, stateController);
+
 
 Readable* readables[] = {
-  adcs
+  adcs,
+  motorCurrent,
+  fcCurrent,
   //serialInput
 };
 Dependable* dependables[] = {
@@ -70,8 +72,7 @@ Dependable* dependables[] = {
   stateController
 };
 Output* outputs[] = {
-  stateSerialMonitor,
-  voltageSerialMonitor,
+  humanReadableSerial,
   bigPump,
   lilPump,
   faultOutput

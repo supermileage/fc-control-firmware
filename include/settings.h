@@ -1,8 +1,8 @@
 #include "Arduino.h"
 #include "fcp-common/src/fcp-common.h"
 
-#define INIT_TIME_LIMIT 3000
-#define RECOVERY_TIME_LIMIT 3000
+#define INIT_TIME_LIMIT 30000
+#define RECOVERY_TIME_LIMIT 30000
 #define RECOVERY_VOLTAGE 0.7
 #define EXIT_RECOVERY_DIFF 0.05   // will exit recovery at REC_VOLTAGE + EXIT_RECOVERY_DIFF
 #define FAULT_VOLTAGE 0.5
@@ -30,7 +30,7 @@
 
 /*Current Sensing Values*/
 #define offsetMotor 0.5054
-#define stepCurrentMotor 0.61
+#define stepCurrentMotor 1.22
 
 /* ADC Values */
 #define ADCBits 12

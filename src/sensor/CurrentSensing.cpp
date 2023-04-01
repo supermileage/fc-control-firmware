@@ -11,13 +11,15 @@ CurrentSensing::CurrentSensing(uint8_t pin, float offset, float currentStep) {
 
 void CurrentSensing::read() {
   float ADCres = 1023.0; //sensitivity
-  float raw = analogRead(sensorPin);
-  value = ((float)(raw/ ADCres) - offset) * currentStep;
-  SERIAL.println(raw/ADCres);
+  int raw = analogRead(sensorPin);
+  value = ((float)((float)raw / ADCres) - offset) * currentStep;
+  //SERIAL.println(raw/ADCres);
 }
 
 float CurrentSensing::getValue(){
   return value;
 }
 
-
+float* CurrentSensing::getValuePointer(){
+  return &value;
+}

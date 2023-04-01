@@ -34,5 +34,5 @@ void loop(){
   for (int i = 0; i < sizeof(outputs) / sizeof(outputs[0]); ++i) {
     outputs[i]->refresh();
   }
-  delay(1);
+  // delay(1);
 }

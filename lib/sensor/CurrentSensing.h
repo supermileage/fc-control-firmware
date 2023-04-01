@@ -17,6 +17,7 @@ class CurrentSensing: public Sensor<float>{
 
     void read() override;
     float getValue() override;
+    float* getValuePointer();
 
     private:
         uint8_t sensorPin;
