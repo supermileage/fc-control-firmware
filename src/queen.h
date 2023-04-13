@@ -36,7 +36,7 @@ Voltages* voltages = new Voltages(adcs, NUM_ADCS, FC_NUM_CELLS + 1);
 CellVoltages *cellVoltages = new CellVoltages(voltages);
 MillisTimer* millisTimer = new MillisTimer();
 Minimum* minimumVoltage = new Minimum(cellVoltages->getValue(), FC_NUM_CELLS);
-StateController* stateController = new StateController(cellVoltages, FC_NUM_CELLS, millisTimer, minimumVoltage);
+StateController* stateController = new StateController(cellVoltages, voltages, FC_NUM_CELLS, millisTimer, minimumVoltage);
 
 // Outputs
 ControlState bigPumpOnStates[] = {ControlState::RECOVER_INIT, ControlState::RECOVER_MAIN};

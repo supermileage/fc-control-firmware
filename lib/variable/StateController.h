@@ -13,7 +13,7 @@ public:
   /**
    * @brief Construct a new ControlState object
    */
-  StateController(CellVoltages*, uint8_t, MillisTimer*, Minimum*);
+  StateController(CellVoltages*, Voltages*, uint8_t, MillisTimer*, Minimum*);
 
   /**
    * @brief Update Control State
@@ -36,7 +36,8 @@ public:
 
 private:
   ControlState state;
-  CellVoltages* voltages;
+  CellVoltages* cellVoltages;
+  Voltages* voltages;
   MillisTimer* timer;
   uint8_t numVoltages;
   Minimum* minVoltage;

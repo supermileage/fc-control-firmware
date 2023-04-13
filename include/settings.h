@@ -1,8 +1,10 @@
 #include "Arduino.h"
 #include "fcp-common/src/fcp-common.h"
 
-#define INIT_TIME_LIMIT 30000
-#define RECOVERY_TIME_LIMIT 30000
+#define STACK_STATE_CONTROL
+
+#define INIT_TIME_LIMIT 15000
+#define RECOVERY_TIME_LIMIT 15000
 #define RECOVERY_VOLTAGE 0.7
 #define EXIT_RECOVERY_DIFF 0.05   // will exit recovery at REC_VOLTAGE + EXIT_RECOVERY_DIFF
 #define FAULT_VOLTAGE 0.5

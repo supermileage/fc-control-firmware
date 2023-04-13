@@ -9,17 +9,23 @@ HumanReadableSerial::HumanReadableSerial(CellVoltages* voltages, CurrentSensing*
 }
 
 void HumanReadableSerial::refresh(){
-  Serial.println("--------------------------------------------");
-  Serial.print("State: ");
-  Serial.println(controlStateToString(state->getValue()));
-  Serial.print("Motor Current: ");
-  Serial.print(motorCurrent->getValue());
-  Serial.print("\t\tFC Current: ");
-  Serial.println(fcCurrent->getValue());
-  Serial.print("Voltages: ");
+  String output = "";
+  output += "--------------------------------------------";
+  output += "\n";
+  output += millis();
+  output += "\n";
+  output +="State: ";
+  output += controlStateToString(state->getValue());
+  output += "\n";
+  output += "Motor Current: ";
+  output += motorCurrent->getValue();
+  output += "\t\tFC Current: ";
+  output += fcCurrent->getValue();
+  output += "\n";
+  output += "Voltages: ";
   for (int i = 0; i < FC_NUM_CELLS; i++){
-    Serial.print(voltages->getValue()[i]);
-    Serial.print(" ");
+    output += voltages->getValue()[i];
+    output += "\t";
   }
-  Serial.println("");
+  Serial.println(output);
 }
