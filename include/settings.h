@@ -1,8 +1,8 @@
 #include "Arduino.h"
 #include "fcp-common/src/fcp-common.h"
 
-// #define STACK_STATE_CONTROL
-// #define HIGH_VOLTAGE_FAULT
+#define STACK_STATE_CONTROL
+#define HIGH_VOLTAGE_FAULT
 
 #define INIT_TIME_LIMIT 15000
 #define RECOVERY_TIME_LIMIT 15000

@@ -12,7 +12,7 @@ void HumanReadableSerial::refresh(){
   String output = "";
   output += "--------------------------------------------";
   output += "\n";
-  output += millis();
+  output += state->getFaultReason();
   output += "\n";
   output +="State: ";
   output += controlStateToString(state->getValue());

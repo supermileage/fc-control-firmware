@@ -24,10 +24,13 @@ public:
    */
   float getValue() override;
 
+  int getIndex();
+
 private:
   float *values;
   uint8_t numValues;
   float minimum;
+  int index;
 };
   
 

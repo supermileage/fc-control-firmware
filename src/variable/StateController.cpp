@@ -13,6 +13,7 @@ StateController::StateController(CellVoltages* cellVoltages, Voltages* voltages,
   this->numVoltages = numVoltages;
   this->minVoltage = minVoltage;
   this->state = ControlState::INIT;
+  this->faultReason = "RUNNING";
 }
 
 void StateController::refresh() {
@@ -22,26 +23,27 @@ void StateController::refresh() {
         this->state = ControlState::RECOVER_INIT;
       }
       #ifndef STACK_STATE_CONTROL
-      else if (this->minVoltage->getValue() > RECOVERY_VOLTAGE) {
+      else if (this->minVoltage->getValue() > FAULT_VOLTAGE) {
         this->state = ControlState::MAIN;
       }
       #else
-      else if (this->voltages->getValue()[numVoltages] > RECOVERY_VOLTAGE * numVoltages) {
+      else if (this->voltages->getValue()[numVoltages] > FAULT_VOLTAGE * numVoltages) {
         this->state = ControlState::MAIN;
       }
       #endif
       break;
     case ControlState::RECOVER_INIT:
       #ifndef STACK_STATE_CONTROL
-      if (this->minVoltage->getValue() > RECOVERY_VOLTAGE) {
+      if (this->minVoltage->getValue() > FAULT_VOLTAGE) {
         this->state = ControlState::MAIN;
       }
       #else
-      if (this->voltages->getValue()[numVoltages] > RECOVERY_VOLTAGE * numVoltages) {
+      if (this->voltages->getValue()[numVoltages] > FAULT_VOLTAGE * numVoltages) {
         this->state = ControlState::MAIN;
       }
       #endif
       else if (this->timer->getValue() > RECOVERY_TIME_LIMIT + INIT_TIME_LIMIT) {
+        this->faultReason = "INIT->TIMEOUT";
         this->state = ControlState::FAULT;
       }
       break;
@@ -58,6 +60,7 @@ void StateController::refresh() {
       #ifdef HIGH_VOLTAGE_FAULT
       // If stack voltage is higher than HIGH_FAULT_VOLTAGE, assume safety board fault
       else if (this->voltages->getValue()[numVoltages] > HIGH_FAULT_VOLTAGE) {
+        this->faultReason = "MAIN->HIGH_VOLTAGE_FAULT";
         this->state = ControlState::FAULT;
       }
       #endif
@@ -68,12 +71,14 @@ void StateController::refresh() {
         this->state = ControlState::MAIN;
       } else if (this->minVoltage->getValue() < FAULT_VOLTAGE) {
         this->state = ControlState::FAULT;
+        this->faultReason = "MAIN->FAULT_VOLTAGE";
       }
       #else
       if (this->voltages->getValue()[numVoltages] > RECOVERY_VOLTAGE * numVoltages + EXIT_RECOVERY_DIFF * numVoltages) {
         this->state = ControlState::MAIN;
       } else if (this->voltages->getValue()[numVoltages] < FAULT_VOLTAGE * numVoltages) {
         this->state = ControlState::FAULT;
+        this->faultReason = "MAIN->FAULT_VOLTAGE";
       }
       #endif
       break;
@@ -90,4 +95,8 @@ ControlState StateController::getValue() {
 
 const char** StateController::getString() {
   return &stateString;
+}
+
+char * StateController::getFaultReason() {
+  return faultReason;
 }

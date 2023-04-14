@@ -34,6 +34,8 @@ public:
   */
   const char** getString();
 
+  char* getFaultReason();
+
 private:
   ControlState state;
   CellVoltages* cellVoltages;
@@ -42,6 +44,7 @@ private:
   uint8_t numVoltages;
   Minimum* minVoltage;
   const char* stateString;
+  char* faultReason;
 };
   
 
