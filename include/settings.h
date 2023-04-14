@@ -1,13 +1,15 @@
 #include "Arduino.h"
 #include "fcp-common/src/fcp-common.h"
 
-#define STACK_STATE_CONTROL
+// #define STACK_STATE_CONTROL
+// #define HIGH_VOLTAGE_FAULT
 
 #define INIT_TIME_LIMIT 15000
 #define RECOVERY_TIME_LIMIT 15000
 #define RECOVERY_VOLTAGE 0.7
 #define EXIT_RECOVERY_DIFF 0.05   // will exit recovery at REC_VOLTAGE + EXIT_RECOVERY_DIFF
 #define FAULT_VOLTAGE 0.5
+#define HIGH_FAULT_VOLTAGE 18.0
 #define VOLTAGE_MULTIPLIER 1.013
 
 #define LED 13

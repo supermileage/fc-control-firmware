@@ -55,6 +55,12 @@ void StateController::refresh() {
         this->state = ControlState::RECOVER_MAIN;
       }
       #endif
+      #ifdef HIGH_VOLTAGE_FAULT
+      // If stack voltage is higher than HIGH_FAULT_VOLTAGE, assume safety board fault
+      else if (this->voltages->getValue()[numVoltages] > HIGH_FAULT_VOLTAGE) {
+        this->state = ControlState::FAULT;
+      }
+      #endif
       break;
     case ControlState::RECOVER_MAIN:
       #ifndef STACK_STATE_CONTROL
